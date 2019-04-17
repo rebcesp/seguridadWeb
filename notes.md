@@ -20,6 +20,14 @@ SELECT name, description, FROM products WHERE category = 'Gifts' UNION SELECT us
 
 Si consideramos que tenemos una aplicacion de shooping que muestra productos en diferentes categorias. 
 
+En esta sección no explicare la anatomia de una URL, esto lo puedes encontrar en Google por ejemplo aqui: [_Anatomia de una URL_](https://developer.mozilla.org/es/docs/Learn/Common_questions/Qu%C3%A9_es_una_URL)
+
+---
+
+
 Pongamos un ejemplo supongamos que tenemos la categoria de Gifts(Regalos) , la URL es esta:
 
 >_https://insecure-website.com/products?category=Gifts_
+
+
+
