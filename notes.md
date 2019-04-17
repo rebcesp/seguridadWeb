@@ -49,7 +49,7 @@ SELECT * FROM products WHERE category = 'Gifts' AND released = 1
 
 <br>En este caso la aplicación no implementa ninguna defensa contra los ataques de inyección SQL, porque un atacante podria consutir un ataque como este:
 
->https://insecure_website.com/products?category=Gifts'--
+>_https://insecure_website.com/products?category=Gifts'--_
 
 En esta ocasión vamos a ver lo que significa esto : **'--** , el resultado de la consulta seria esta:
 
@@ -57,7 +57,42 @@ En esta ocasión vamos a ver lo que significa esto : **'--** , el resultado de l
 SELECT * FROM products WHERE category = 'Gifts'--' AND released = 1
 ```
 
-<br>La clave de esto es la secuencia del doble guión: **--** _que es un indicador de comentarios en SQL_. Lo cual esto hace que el resto de la consulta se interprete como un comentario. 
+<br>La clave de esto es la secuencia del doble guión: **--** _que es un indicador de comentarios en SQL_. Lo cual esto hace que el resto de la consulta se interprete como un comentario. Esto elimina de manera efectiva el resto de la consulta, porque ya no incluye ``` AND released = 1``` Esto significa que muestran todos los productos no publicados.
+
+<br>
+También yendo mas lejos un atacante puede hacer que la aplicación muestre todos los productos de cualquier categoría, ahora lo veremos como: 
+
+>_https://insecure-website.com/products?category=Gifts'+OR+1=1--_
+
+El resultado de esta consulta SQL sería esta manera: 
+
+```sql
+SELECT * FROM products WHERE category = 'Gifts' OR 1=1--' AND released = 1
+```
+##_Explicación de OR + 1 = 1_
+
+Empezemos entendiendo que en enunciado siempre verdadero esto se usa entre otras cosas para ```anular la condición WHERE y obtener todos los resultados de una consulta.```
+
+Es un enunciado siempre verdadero que se usa para , entre otras cosas, anular una condición Where y obtener todos los resultados de una consulta.
+
+Supongamos que tenemos una tabla usuario , y un campo nombre_usuario
+
+Select * from usuarios where nombre_usuario=’Smith’
+
+Esta consulta devuelve los registros donde nombre_usuario sea Smith.
+
+Suponiendo que la tabla hubiese unicidad por este campo, devolvería 1 solo registro.
+
+Si ahora hacemos:
+
+Select * from usuarios where nombre_usuario=’Smith’ OR 1=1
+
+Como 1=1 es SIEMPRE verdadero, nombre_usuario=’Smith’ OR 1=1 siempre es verdadero de acuerdo a la tabla de verdad de OR.
+
+Como resultado el select alterado devuelve TODOS los registros.
+
+Esta es una técnica básica de inyección SQL para que una consulta devuelva información adicional por alteración ‘aditiva’ (es decir, la consulta original permanece inalterada, y se añade texto que altera su resultado).
+
 
 
 
