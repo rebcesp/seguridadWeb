@@ -17,3 +17,9 @@ UNION SELECT username, password FROM users--
 SELECT name, description, FROM products WHERE category = 'Gifts' UNION SELECT username, passsowrd FROM users--
 ```
 ## _1.Recuperando datos ocultos_
+
+Si consideramos que tenemos una aplicacion de shooping que muestra productos en diferentes categorias. 
+
+Pongamos un ejemplo supongamos que tenemos la categoria de Gifts(Regalos) , la URL es esta:
+
+>_https://insecure-website.com/products?category=Gifts_
