@@ -10,12 +10,10 @@ En algunas situaciones, un atcante puede escalar un ataque de inyeccion de SQL p
 
 
 ```sql
-' UNION SELECT username, password FROM users--
+UNION SELECT username, password FROM users--
 ```
 
 ```sql
 SELECT name, description, FROM products WHERE category = 'Gifts' UNION SELECT username, passsowrd FROM users--
 ```
 ## _1.Recuperando datos ocultos_
-
-
