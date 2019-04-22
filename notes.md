@@ -69,29 +69,43 @@ El resultado de esta consulta SQL sería esta manera:
 ```sql
 SELECT * FROM products WHERE category = 'Gifts' OR 1=1--' AND released = 1
 ```
-##_Explicación de OR + 1 = 1_
+## _Explicación de OR + 1 = 1_
 
-Empezemos entendiendo que en enunciado siempre verdadero esto se usa entre otras cosas para ```anular la condición WHERE y obtener todos los resultados de una consulta.```
+Empezemos entendiendo que en enunciado siempre verdadero esto se usa entre otras cosas para ```ANULAR la condición WHERE y obtener todos los resultados de una consulta.```
 
 Es un enunciado siempre verdadero que se usa para , entre otras cosas, anular una condición Where y obtener todos los resultados de una consulta.
 
 Supongamos que tenemos una tabla usuario , y un campo nombre_usuario
 
-Select * from usuarios where nombre_usuario=’Smith’
-
+```sql
+SELECT * FROM usuarios WHERE nombre_usuario = ’Smith’
+```
 Esta consulta devuelve los registros donde nombre_usuario sea Smith.
 
 Suponiendo que la tabla hubiese unicidad por este campo, devolvería 1 solo registro.
 
 Si ahora hacemos:
+```sql
+SELECT * FROM usuarios WHERE nombre_usuario = ’Smith’ OR 1=1
+```
+>Como 1=1 es SIEMPRE verdadero, nombre_usuario=’Smith’ OR 1=1 siempre es verdadero de acuerdo a la tabla de verdad de OR.
 
-Select * from usuarios where nombre_usuario=’Smith’ OR 1=1
-
-Como 1=1 es SIEMPRE verdadero, nombre_usuario=’Smith’ OR 1=1 siempre es verdadero de acuerdo a la tabla de verdad de OR.
-
-Como resultado el select alterado devuelve TODOS los registros.
+Como resultado el ```SELECT``` alterado devuelve TODOS los registros.
 
 Esta es una técnica básica de inyección SQL para que una consulta devuelva información adicional por alteración ‘aditiva’ (es decir, la consulta original permanece inalterada, y se añade texto que altera su resultado).
+
+## _Taulogía - Explicación._
+
+Es una condicion que siempre es verdadera, ES DECIR ES UNA FORMULA BIEN FORMULADA que resulta siempre verdadera para cualquier interpretación.
+
+## _**Diagrama Tabla de verdad**_
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/3/3e/Logical_connectives_Hasse_diagram.svg" alt="kodama" style="width:50%; margin:left; display:block;">
+
+El primer ejercicio creo que se ha explicado a detalle, pasemos al segundo.
+
+
+
 
 
 
