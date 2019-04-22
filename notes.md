@@ -1,5 +1,8 @@
 # _Mis Apuntes (WebSecurityAcademy)_
 
+  ### _Indice_
+    [1.Recuperando Datos Ocultos](## _1.Recuperando datos ocultos_)
+
 ## _Que es una Inyeccion SQL_
 
 Es una vulnerabilidad de seguridad web que permite a un atacante interferir con las consultas que una aplicación reaqliza en su base de datos.
