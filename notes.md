@@ -100,7 +100,7 @@ Es una condicion que siempre es verdadera, ES DECIR ES UNA FORMULA BIEN FORMULAD
 
 ## _**Diagrama Tabla de verdad**_
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/3/3e/Logical_connectives_Hasse_diagram.svg" alt="kodama" style="width:50%; margin:left; display:block;">
+<img src="https://upload.wikimedia.org/wikipedia/commons/3/3e/Logical_connectives_Hasse_diagram.svg" alt="kodama" style="width:25%; margin:left; display:block;">
 
 El primer ejercicio creo que se ha explicado a detalle, pasemos al segundo.
 
