@@ -1,7 +1,5 @@
 # _Mis Apuntes (WebSecurityAcademy)_
 
-  ### _Indice_
-    [1.Recuperando Datos Ocultos](## _1.Recuperando datos ocultos_)
 
 ## _Que es una Inyeccion SQL_
 
