@@ -118,7 +118,7 @@ de la cláusula ```WHERE``` de la consulta. Por ejemplo si queremos saltarnos es
 SELECT * FROM users WHERE username = 'administrador'-- AND password = ""
 ```
 
-La consulta nos retornara el acceso de administrador porque estamos usando la sintaxis de de comentarios ```--``` que lo que hace es evadir la clausula ```WHERE``` teniendo el acceso.
+La consulta nos retornara el acceso de administrador porque estamos usando la sintaxis de de comentarios ```--``` que lo que hace es evadir la cláusula ```WHERE``` teniendo el acceso.
 
 
 
