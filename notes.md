@@ -1,6 +1,5 @@
 # _Mis Apuntes (WebSecurityAcademy)_
 
-
 ## _Que es una Inyeccion SQL_
 
 Es una vulnerabilidad de seguridad web que permite a un atacante interferir con las consultas que una aplicación reaqliza en su base de datos.
@@ -17,7 +16,7 @@ UNION SELECT username, password FROM users--
 ```sql
 SELECT name, description, FROM products WHERE category = 'Gifts' UNION SELECT username, passsowrd FROM users--
 ```
-## _1.Recuperando datos ocultos_
+## _**1.Recuperando datos ocultos**_
 
 Si consideramos que tenemos una aplicacion de shooping que muestra productos en diferentes categorias. 
 
@@ -101,9 +100,26 @@ Es una condicion que siempre es verdadera, ES DECIR ES UNA FORMULA BIEN FORMULAD
 
 ## _**Diagrama Tabla de verdad**_
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/3/3e/Logical_connectives_Hasse_diagram.svg" alt="kodama" style="width:25%; margin:left; display:block;">
+<img src="https://upload.wikimedia.org/wikipedia/commons/3/3e/Logical_connectives_Hasse_diagram.svg" alt="kodama" style="width:50%; margin:left; display:block;">
 
 ## _**2. Subvirtiendo la lógica de la aplicación**_
+
+Considere una aplicación que permita a los usuarios iniciar sesión con un nombre de usuario y contraseña. Si un usuario envía el nombre de usuario ```rebcesp``` y la contraseña por ejemplo ```123456```, la aplicación lo que hace es verificar estos datos consultado la siguiente consulta SQL:
+
+```sql
+SELECT * FROM users WHERE username = 'rebcesp' AND password = '123456'
+```
+Si la consulta devuleve los detalles de un usuario, el inicio sesión se realiza correctamente. De lo contrario, es rechazado.
+
+Aquí, un atacante puede iniciar sesión como cualquier usuario sin una contraseña simplemente utilizando la secuencia de comentarios de SQL, para eliminar la verificación de la contraseña
+de la cláusula ```WHERE``` de la consulta. Por ejemplo si queremos saltarnos esto y acceder como administrador de la aplicacion web enviariamos el nombre de administrador y una contraseña en blanco. La consulta SQL seria de esta manera
+
+```sql
+SELECT * FROM users WHERE username = 'administrador'-- AND password = ""
+```
+
+La consulta nos retornara el acceso de administrador porque estamos usando la sintaxis de de comentarios ```--``` que lo que hace es evadir la clausula ```WHERE``` teniendo el acceso.
+
 
 
 
