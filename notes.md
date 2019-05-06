@@ -208,7 +208,23 @@ Si el número de nulos no coincide con el número de columnas, la base de datos 
 
 ### _**Encontrar columnas con un tipo de datos útil en un ataque UNION de inyeccion SQL**_
 
-El motivo para realizar un ataque `UNION` de inyeccion SQL 
+El motivo para realizar un ataque `UNION` de inyeccion SQL es poder recuperar los resultados de una consulta inyectada. En general, los datos interesantes que desea recuperar estarán en forma de cadena, por lo que necesita encontrar una o más columnas en los resultados de la consulta original cuyo tipo de datos sea, o sea compatible con, datos de cadena.
+
+Una vez que haya determinado el número de columnas requeridas, puede probar cada columna para comprobar si puede contener datos de cadena enviando una serie de cargas útiles ```UNION SELECT``` que colocan un valor de cadena en cada columna. Por ejemplo, si la consulta devuelve 3 columnas. La query seria de esta manera:
+
+```sql
+'UNION SELECT', NULL,NULL,NULL--
+'UNION SELECT NULL,'a',NULL,
+'UNION SELECT NULL, NULL, 'a', NULL--
+'UNION SELECT NULL,NULL,NULL,'una'--
+```
+
+Si el tipo de datos de una columna no es compatible con los datos de la cadena, la consulta inyectada causará un error en la base de datos, como: 
+
+>Conversion failed when converting the varchar value 'a' to data type int.
+
+Si no se produce un error y la respuesta de la aplicación contiene algun contenido adicional que incluye el valor de la cadena inyectada, entonces la columna correspondiente es adecuada para recuperar los datos de la cadena.
+
 
 
 
