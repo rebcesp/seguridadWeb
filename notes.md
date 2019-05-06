@@ -118,9 +118,97 @@ de la cláusula ```WHERE``` de la consulta. Por ejemplo si queremos saltarnos es
 SELECT * FROM users WHERE username = 'administrador'-- AND password = ""
 ```
 
-La consulta nos retornara el acceso de administrador porque estamos usando la sintaxis de de comentarios ```--``` que lo que hace es evadir la cláusula ```WHERE``` teniendo el acceso.
+La consulta nos retornara el acceso de administrador porque estamos usando la sintaxis de de comentarios ```--``` que lo que hace es evadir la clausula ```WHERE``` teniendo el acceso.
+
+## _**3.Recuperando datos de otras tablas de bases de datos**_ 
+
+En caso que los resultados de una consulta SQL se devuelven dentro de las respuestas de la aplicación, un atacante podría aprovechar esta vulnerabilidad de inyección de SQL para recuperar datos de otras tablas de la base de datos. Esto se haría con la palabra clave ```UNION```, que le permite ejecutar una consulta ```SELECT``` adicional y agregar los resultados a la consulta original.
+
+Supongamos que tenemos una aplicación web y consultamos que contiene la categoría _"Juguetes"_:
+
+```sql
+SELECT name, description FROM productos WHERE category = 'Juguetes'
+```
+
+En esta ocasión el atacante podría consultar con una query de esta forma:
+
+```sql
+' UNION SELECT username, password  FROM users--
+```
+Esto nos devuelve todos los nombres de usuarios y contraseñas junto a nombres y descripciones.
+
+### _**Inyeccion SQL - Ataques UNION**_
+
+Cuando una aplicación es vulnerable a la inyeccion de SQL, y los resultados de la consulta se devuelven dentro de las respuestas de la aplicación. la palabra clave ```UNION``` se puede usar para recuperar datos de otras tablas dentro de la base de datos. Esto resulta ser un ataque de INYECCION UNION en SQL
+
+Por ejemplo:
+
+```sql
+SELECT a,b FROM table1 UNION SELECT c,d FROM table2
+```
+
+Esta consulta SQL devolverá un único conjunto de resultados con dos columnas, que contienen valores de las columnas `a` y `b` en la ```tabla1``` y las columnas `c` y `d` en la `tabla2`
+
+_Para que una consulta ```UNION``` funcione, se deben cumplir dos requisitos clave_
+
+>Las consultas individuales deben devolver el mismo número de columnas
+
+>Los tipos de datos en cada columna deben ser compatibles entre las consultas individuales.
+
+Para llevar a cabo un ataque UNION de inyeccion SQL, debe asegurarse de que su ataque cumple estos dos requisitos. Esto generalmente implica descubrir:
+
+>¿Cuántas columnas se devuelven de la consulta original?
+
+>¿Qué columnas devueltas de la consulta original son de un tipo de datos adecuados para contener los resultados de la consulta inyectada?
+
+### **_Determinacíon del número de columnas necesarias en un ataque UNION de inyección SQL_**
 
 
+Al realizar un ataque ```UNION``` de inyección SQL , existen dos métodos efectivos para determinar cuántas columnas se devuelven desde la consulta original.
+
+**El primer método** consiste en inyectar una serie de cláusulas ```ORDER BY``` e incrementar el índice de columna especificado hasta que se produce un error. Por ejemplo, suponiendo que el punto de inyección es una cadena entre comillas dentro de la cláusula ```WHERE``` de la consulta original, deberá enviar:
+
+
+```sql
+'ORDER BY 1--
+'ORDER BY 2--
+'ORDER BY 3--
+```
+
+Si tenemos una tabla creada por ejemplo llamada Jugadores y 3 columnas , claramente no sabemos el numero de columnas en total que puede tener la tabla, consultariamos de esta manera:
+
+```sql
+SELECT * FROM Jugadores ORDER BY 1;
+```
+De esta manera sabremos cuantas columnas tenemos en total cuando nos lanze un error que la columna no existe en la tabla:
+
+>Unknown column '4' in 'order clause'
+
+La aplicación podría devolver el error de la base de datos en su respuesta HTTP , o podría resolver un error genérico, o simplemente no devolver ningun resultado. Siempre que pueda detetar alguna diferencia en la respuesta de la aplicación, puede inferir cuántas columnas se devuelven desde la consulta.
+
+**El segundo método** consiste en enviar una serie de cargas útiles ```'UNION SELECT``` especificando un número diferente de valores nulos:
+
+```sql
+'UNION SELECT NULL--
+'UNION SELECT NULL, NULL--
+'UNION SELECT NULL,NULL, NULL--
+```
+La query que utilizaría seria igual de la tabla Jugadores:
+
+```sql
+SELECT * FROM Authors UNION SELECT NULL,NULL,NULL;
+```
+
+Si el número de nulos no coincide con el número de columnas, la base de datos devuelve un error, como:
+
+>The used SELECT statements have a different number of columns
+
+
+>All queries combined using a UNION, INTERSECT or EXCEPT operator must have an equal number of expressions in their target lists
+
+### _**Encontrar columnas con un tipo de datos útil en un ataque UNION de inyeccion SQL**_
+
+El motivo para realizar un ataque `UNION` de inyeccion SQL 
 
 
 
